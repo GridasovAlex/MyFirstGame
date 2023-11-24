@@ -4,6 +4,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 
+
 class AlienInvasion():
     """Класс для управленяи ресурсами и поведением игры"""
 
@@ -19,17 +20,23 @@ class AlienInvasion():
     def run_game(self):
         """Запуск основнова цикла игры"""
         while True:
-            #отслеживание событий клавиатуры и мыши
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
+            self._check_events()
+            self._update_screen()
 
-            #при каждом проходе цикла перерисовывается экран
+    def _check_events(self):
+        """Обрабатывает нажатия клавиш и события мыши"""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+    def _update_screen(self):
+            """Обновляет изображение на экране и отображает новый экран"""
             self.screen.fill(self.settings.bg_color)
             self.ship.blitme()
 
             #отображение прорисованного экрана
             pygame.display.flip()
+
 
 if __name__ == '__main__':
     #создание экземпляра и запуск игры
