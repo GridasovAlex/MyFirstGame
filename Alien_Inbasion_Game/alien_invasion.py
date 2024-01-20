@@ -3,7 +3,7 @@ import pygame
 
 from settings import Settings
 from ship import Ship
-
+from bullet import Bullet
 
 class AlienInvasion():
     """Класс для управленяи ресурсами и поведением игры"""
@@ -16,6 +16,7 @@ class AlienInvasion():
                                                self.settings.screen_height))
         pygame.display.set_caption('Alien Invision')
         self.ship = Ship(self)
+        self.bullets = pygame.sprite.Group()
 
     def run_game(self):
         """Запуск основнова цикла игры"""
@@ -23,6 +24,7 @@ class AlienInvasion():
             self._check_events()
             self._update_screen()
             self.ship.update_rect()
+            self.bullets.update()
 
     def _check_events(self):
         """Обрабатывает нажатия клавиш и события мыши"""
@@ -44,8 +46,15 @@ class AlienInvasion():
             self.ship.moving_up = True
         elif event.key == pygame.K_DOWN:
             self.ship.moving_down = True
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
         elif event.key == pygame.K_q:
             sys.exit()
+
+    def _fire_bullet(self):
+        """Создание нового снаряда и включение его в группу bullets"""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
 
     def _check_keyup_events(self, event):
         """реагируент на отпускание клавиш"""
@@ -62,6 +71,8 @@ class AlienInvasion():
             """Обновляет изображение на экране и отображает новый экран"""
             self.screen.fill(self.settings.bg_color)
             self.ship.blitme()
+            for bullet in self.bullets.sprites():
+                bullet.draw_bullet()
 
             #отображение прорисованного экрана
             pygame.display.flip()

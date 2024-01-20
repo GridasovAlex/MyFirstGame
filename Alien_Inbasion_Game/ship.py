@@ -12,7 +12,7 @@ class Ship():
         self.screen_rect = ai_game.screen.get_rect()
 
         #загружает изображение корабля и добавляет прямоугольник
-        self.image = pygame.image.load('D:\MyFirstGame\Alien_Inbasion_Game\images\ship.bmp')
+        self.image = pygame.image.load('D:\MyFirstGame\Alien_Inbasion_Game\images\canvas.bmp')
         self.image = pygame.transform.scale(self.image, DEFAULT_IMAGE_SIZE)
         self.rect = self.image.get_rect()
 
