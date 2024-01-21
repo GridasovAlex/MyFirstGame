@@ -12,10 +12,11 @@ class Settings():
         self.bg_color = (0, 0, 0)
 
         #параметры снаряда
-        self.bullet_speed = 2
+        self.bullet_speed = 1
         self.bullet_width = 6
         self.bullet_height = 12
         self.bullet_color = (90,90,90)
+        self.bullet_allowed = 2
 
         #скорость перемещения корабя
         self.move_speed = 1.5
