@@ -26,6 +26,11 @@ class AlienInvasion():
             self.ship.update_rect()
             self.bullets.update()
 
+            #удаление снарядов вышедших за край экрана
+            for bullet in self.bullets.copy():
+                if bullet.rect.bottom <=0:
+                    self.bullets.remove(bullet)
+
     def _check_events(self):
         """Обрабатывает нажатия клавиш и события мыши"""
         for event in pygame.event.get():
