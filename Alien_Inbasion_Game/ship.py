@@ -1,6 +1,6 @@
 import pygame
 
-DEFAULT_IMAGE_SIZE = (40, 40)
+DEFAULT_IMAGE_SIZE = (60, 40)
 
 class Ship():
     """Класс для управления кораблем"""
