@@ -1,3 +1,4 @@
+from typing import Any
 import pygame
 from pygame.sprite import Sprite
 
@@ -10,6 +11,7 @@ class Alien(Sprite):
         """инициаоизируем пришельца и задаем его начальную позицию"""
         super().__init__()
         self.screen = ai_game.screen
+        self.settings = ai_game.settings
 
         # Загрузка изображения пришельца и назначение атрибута rect
         self.image = pygame.image.load('Alien_Inbasion_Game\images\lien.bmp')
@@ -22,3 +24,8 @@ class Alien(Sprite):
 
         # сохранение точной горизонатльной позиции пришельца
         self.x = float(self.rect.x)
+
+    def update(self):
+        """перемещенеи пришельца вправо"""
+        self.x += self.settings.alien_speed
+        self.rect.x = self.x
