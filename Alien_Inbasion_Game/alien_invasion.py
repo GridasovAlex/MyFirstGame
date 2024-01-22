@@ -26,9 +26,10 @@ class AlienInvasion():
         """Запуск основнова цикла игры"""
         while True:
             self._check_events()
-            self._update_screen()
             self.ship.update_rect()
             self._update_bullets()
+            self._update_aliens()
+            self._update_screen()
 
     def _check_events(self):
         """Обрабатывает нажатия клавиш и события мыши"""
@@ -111,16 +112,34 @@ class AlienInvasion():
         alien.rect.y = alien_height + 2 * alien_height * row_number
         self.aliens.add(alien)
 
-    def _update_screen(self):
-            """Обновляет изображение на экране и отображает новый экран"""
-            self.screen.fill(self.settings.bg_color)
-            self.ship.blitme()
-            for bullet in self.bullets.sprites():
-                bullet.draw_bullet()
-            self.aliens.draw(self.screen)
+    def _update_aliens(self):
+        """обновляет позицию всех пришельцев во флоте"""
+        self._check_fleet_edges()
+        self.aliens.update()
 
-            #отображение прорисованного экрана
-            pygame.display.flip()
+    def _check_fleet_edges(self):
+        """реакция на достижение пришельцем края экрана"""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """опускает флот и меняет направление"""
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_derection *= -1
+
+    def _update_screen(self):
+        """Обновляет изображение на экране и отображает новый экран"""
+        self.screen.fill(self.settings.bg_color)
+        self.ship.blitme()
+        for bullet in self.bullets.sprites():
+                bullet.draw_bullet()
+        self.aliens.draw(self.screen)
+
+        #отображение прорисованного экрана
+        pygame.display.flip()
 
 
 if __name__ == '__main__':
