@@ -83,6 +83,11 @@ class AlienInvasion():
             if bullet.rect.bottom <=0:
                 self.bullets.remove(bullet)
 
+        #проверка попаданий в пришельцев
+        #при обнаружении попадания удалить пришельуа и снаряд
+        collision = pygame.sprite.groupcollide(
+            self.bullets, self.aliens, True, True)
+
     def _create_fleet(self):
         """созданеи флота вторжения"""
         # создание пришельца и вычисление прищельцев в ряду
