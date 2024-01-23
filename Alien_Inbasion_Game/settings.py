@@ -20,9 +20,12 @@ class Settings():
 
         #скорость перемещения корабя
         self.move_speed = 1
+        self.ship_limit = 3
 
         #настройки пришельцев
         self.alien_speed = 0.6
         self.fleet_drop_speed = 5
         #fleet_derection = 1 - движение вправо, -1 - влево
         self.fleet_derection = 1
+
+        #
