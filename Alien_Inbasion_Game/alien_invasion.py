@@ -32,9 +32,12 @@ class AlienInvasion():
         """Запуск основнова цикла игры"""
         while True:
             self._check_events()
-            self.ship.update_rect()
-            self._update_bullets()
-            self._update_aliens()
+
+            if self.stats.game_active:
+                self.ship.update_rect()
+                self._update_bullets()
+                self._update_aliens()
+
             self._update_screen()
 
     def _check_events(self):
@@ -140,6 +143,9 @@ class AlienInvasion():
         if pygame.sprite.spritecollide(self.ship, self.aliens, True):
             self._ship_hit()
 
+        # проверить добрались ли пришельцы до нижнего края экрана
+        self._check_aliens_bottom()
+
     def _check_fleet_edges(self):
         """реакция на достижение пришельцем края экрана"""
         for alien in self.aliens.sprites():
@@ -155,19 +161,31 @@ class AlienInvasion():
 
     def _ship_hit(self):
         """обработка столкновеняи корабля с пришельцем"""
-        # уменьшение ship_left
-        self.stats.ship_left -= 1
+        if self.stats.ship_left > 0:
+            # уменьшение ship_left
+            self.stats.ship_left -= 1
 
-        # очистка списков пришельцев и снарядов
-        self.aliens.empty()
-        self.bullets.empty()
+            # очистка списков пришельцев и снарядов
+            self.aliens.empty()
+            self.bullets.empty()
 
-        # созданери нового флота и размещенеи корабля в центре
-        self._create_fleet()
-        self.ship.center_ship()
+            # созданери нового флота и размещенеи корабля в центре
+            self._create_fleet()
+            self.ship.center_ship()
 
-        #пауза
-        sleep(0.5)
+            #пауза
+            sleep(0.5)
+        else:
+            self.stats.game_active = False
+
+    def _check_aliens_bottom(self):
+        """проверяет добрались ли пришельцы до левого края экрана"""
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom:
+                # происходит тоже что и при столкновении с кораблем
+                self._ship_hit()
+                break
 
     def _update_screen(self):
         """Обновляет изображение на экране и отображает новый экран"""
