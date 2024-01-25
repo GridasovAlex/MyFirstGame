@@ -69,27 +69,6 @@ class AlienInvasion():
         elif event.key == pygame.K_q:
             sys.exit()
 
-    def _check_play_button(self, mouse_pos):
-        """Запускаем новую игру при зажатии кнопки Play"""
-        if self.play_button.rect.collidepoint(mouse_pos):
-            #сброс игровой статистики
-            self.stats.reset_stats()
-            self.stats.game_active = True
-
-        #очистка списков пришельцев и снарядов
-        self.aliens.empty()
-        self.bullets.empty()
-
-        #создание нового флота и размещение корабля в центре
-        self._create_fleet()
-        self.ship.center_ship()
-
-    def _fire_bullet(self):
-        """Создание нового снаряда и включение его в группу bullets"""
-        if len(self.bullets) < self.settings.bullet_allowed:
-            new_bullet = Bullet(self)
-            self.bullets.add(new_bullet)
-
     def _check_keyup_events(self, event):
         """реагируент на отпускание клавиш"""
         if event.key == pygame.K_RIGHT:
@@ -100,6 +79,34 @@ class AlienInvasion():
             self.ship.moving_up = False
         elif event.key == pygame.K_DOWN:
             self.ship.moving_down = False
+
+    def _check_play_button(self, mouse_pos):
+        """Запускаем новую игру при зажатии кнопки Play"""
+        button_clicket = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicket and not self.stats.game_active:
+            #сброс игровых настроек
+            self.settings.initialize_dynamic_settings()
+
+            #сброс игровой статистики
+            self.stats.reset_stats()
+            self.stats.game_active = True
+
+            #очистка списков пришельцев и снарядов
+            self.aliens.empty()
+            self.bullets.empty()
+
+            #создание нового флота и размещение корабля в центре
+            self._create_fleet()
+            self.ship.center_ship()
+
+            #cкрываем указатель мыши
+            pygame.mouse.set_visible(False)
+
+    def _fire_bullet(self):
+        """Создание нового снаряда и включение его в группу bullets"""
+        if len(self.bullets) < self.settings.bullet_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
 
     def _update_bullets(self):
         """обновляет позицию снарядов и уничтожает старые снаряды"""
@@ -123,6 +130,7 @@ class AlienInvasion():
             # уничтожение существующих снаряжов и создание нового флота
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
 
     def _create_fleet(self):
         """созданеи флота вторжения"""
@@ -149,7 +157,7 @@ class AlienInvasion():
         self.play_button = Button(self,'Play')
 
     def _create_alien(self, alien_number, alien_width, alien_height, row_number):
-        """создание пришельца и размещение е го в ряду"""
+        """создание пришельца и размещение его в ряду"""
         alien = Alien(self)
         alien.x = alien_width + 2 * alien_width * alien_number
         alien.rect.x = alien.x

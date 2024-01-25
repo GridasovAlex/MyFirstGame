@@ -33,15 +33,15 @@ class Ship():
         """обновляем позицию корабля с учетом флагов"""
         #обновляем по иксу
         if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.x += self.settings.move_speed
+            self.x += self.settings.ship_speed_factor
         if self.moving_left and self.rect.left > 0:
-            self.x -= self.settings.move_speed
+            self.x -= self.settings.ship_speed_factor
 
         #обновляем по игрику
         if self.moving_up and self.rect.top > 0:
-            self.y -= self.settings.move_speed
+            self.y -= self.settings.ship_speed_factor
         if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
-            self.y += self.settings.move_speed
+            self.y += self.settings.ship_speed_factor
 
         #обновление атрибута rect на основании self.x
         self.rect.x = self.x
