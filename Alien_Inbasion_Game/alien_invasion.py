@@ -8,6 +8,7 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from game_stats import Game_stats
+from button import Button
 
 class AlienInvasion():
     """Класс для управленяи ресурсами и поведением игры"""
@@ -126,6 +127,9 @@ class AlienInvasion():
                 # создание пришельца, размещение его в ряду
                 self._create_alien(alien_number, alien_width, alien_height, row_number)
 
+        # создание кнопки Play
+        self.play_button = Button(self,'Play')
+
     def _create_alien(self, alien_number, alien_width, alien_height, row_number):
         """создание пришельца и размещение е го в ряду"""
         alien = Alien(self)
@@ -194,6 +198,10 @@ class AlienInvasion():
         for bullet in self.bullets.sprites():
                 bullet.draw_bullet()
         self.aliens.draw(self.screen)
+
+        #отоброженеи Play в случае если игра не активна
+        if not self.stats.game_active:
+            self.play_button.draw_button()
 
         #отображение прорисованного экрана
         pygame.display.flip()
