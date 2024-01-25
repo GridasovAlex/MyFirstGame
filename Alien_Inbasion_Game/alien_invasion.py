@@ -93,6 +93,7 @@ class AlienInvasion():
             #сброс игровой статистики
             self.stats.reset_stats()
             self.sb.prep_score()
+            self.sb.prepr_lvl()
             self.stats.game_active = True
 
             #очистка списков пришельцев и снарядов
@@ -141,6 +142,10 @@ class AlienInvasion():
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+
+            #увеличение уровня
+            self.stats.level += 1
+            self.sb.prepr_lvl()
 
     def _create_fleet(self):
         """созданеи флота вторжения"""
