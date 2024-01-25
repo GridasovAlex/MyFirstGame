@@ -25,6 +25,9 @@ class Settings():
         #fleet_derection = 1 - движение вправо, -1 - влево
         self.fleet_derection = 1
 
+        #пдсчет очков
+        self.alien_points = 50
+
         #Темп ускорения игры
         self.speedup_scale = 1.1
 
