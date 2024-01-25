@@ -50,6 +50,9 @@ class AlienInvasion():
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
 
     def _check_keydown_events(self, event):
         """реагирует на нажатие клавиш"""
@@ -65,6 +68,11 @@ class AlienInvasion():
             self._fire_bullet()
         elif event.key == pygame.K_q:
             sys.exit()
+
+    def _check_play_button(self, mouse_pos):
+        """Запускаем новую игру при зажатии кнопки Play"""
+        if self.play_button.rect.collidepoint(mouse_pos):
+            self.stats.game_active = True
 
     def _fire_bullet(self):
         """Создание нового снаряда и включение его в группу bullets"""
