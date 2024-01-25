@@ -92,6 +92,7 @@ class AlienInvasion():
 
             #сброс игровой статистики
             self.stats.reset_stats()
+            self.sb.prep_score()
             self.stats.game_active = True
 
             #очистка списков пришельцев и снарядов
@@ -130,7 +131,9 @@ class AlienInvasion():
             self.bullets, self.aliens, True, True)
 
         if collision:
-            self.stats.score += self.settings.alien_points
+            for aliens in collision.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
+            self.sb.check_high_score()
             self.sb.prep_score()
 
         if not self.aliens:
@@ -168,7 +171,7 @@ class AlienInvasion():
         alien = Alien(self)
         alien.x = alien_width + 2 * alien_width * alien_number
         alien.rect.x = alien.x
-        alien.rect.y = alien_height + 2 * alien_height * row_number
+        alien.rect.y = alien_height + 2 * alien_height * row_number + 15
         self.aliens.add(alien)
 
     def _update_aliens(self):
@@ -183,18 +186,18 @@ class AlienInvasion():
         # проверить добрались ли пришельцы до нижнего края экрана
         self._check_aliens_bottom()
 
+    def _change_fleet_direction(self):
+        """опускает флот и меняет направление"""
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_derection *= -1
+
     def _check_fleet_edges(self):
         """реакция на достижение пришельцем края экрана"""
         for alien in self.aliens.sprites():
             if alien.check_edges():
                 self._change_fleet_direction()
                 break
-
-    def _change_fleet_direction(self):
-        """опускает флот и меняет направление"""
-        for alien in self.aliens.sprites():
-            alien.rect.y += self.settings.fleet_drop_speed
-        self.settings.fleet_derection *= -1
 
     def _ship_hit(self):
         """обработка столкновеняи корабля с пришельцем"""
@@ -214,6 +217,7 @@ class AlienInvasion():
             sleep(0.5)
         else:
             self.stats.game_active = False
+            pygame.mouse.set_visible(True)
 
     def _check_aliens_bottom(self):
         """проверяет добрались ли пришельцы до левого края экрана"""
