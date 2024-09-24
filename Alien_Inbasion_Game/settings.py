@@ -12,7 +12,7 @@ class Settings():
         self.bg_color = (0, 0, 0)
 
         #параметры снаряда
-        self.bullet_width = 4
+        self.bullet_width = 240
         self.bullet_height = 16
         self.bullet_color = (90,90,90)
         self.bullet_allowed = 4
